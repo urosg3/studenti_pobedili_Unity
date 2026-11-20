@@ -177,7 +177,9 @@ JSON
 # ---------------------------------------------------------------- primena
 apply_unity() {   # $1 = bordo | svetla; Unity 7 (Ubuntu Unity)
     gnome_ok || { warn "GSettings podešavanja nisu dostupna."; return 0; }
-    gsettings set org.gnome.desktop.background picture-uri "file://$BG_DIR/svetla.xml"
+    # Unity ne podrzava picture-uri-dark, pa pozadinu biramo prema varijanti
+    local bg; if [ "$1" = bordo ]; then bg=bordo.xml; else bg=svetla.xml; fi
+    gsettings set org.gnome.desktop.background picture-uri "file://$BG_DIR/$bg"
     gkey_exists org.gnome.desktop.background picture-uri-dark && gsettings set org.gnome.desktop.background picture-uri-dark "file://$BG_DIR/bordo.xml"
     gsettings set org.gnome.desktop.background picture-options 'zoom'
     gkey_exists org.gnome.desktop.screensaver picture-uri && gsettings set org.gnome.desktop.screensaver picture-uri "file://$BG_DIR/$LOCK_WALL"
